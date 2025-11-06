@@ -1,21 +1,21 @@
 # ChatKu - Realtime Chat Application
 
-Aplikasi web chat realtime yang dibangun dengan Next.js 16, shadcn/ui, dan Ably untuk komunikasi realtime.
+A modern realtime chat application built with Next.js 16, shadcn/ui, and Ably for realtime communication.
 
-## ✨ Fitur
+## Features
 
-- 🚀 **Realtime Messaging** - Pesan langsung terkirim ke semua pengguna yang aktif
-- 👥 **Active Users** - Lihat siapa saja yang sedang online
-- ⌨️ **Typing Indicator** - Indikator ketika pengguna lain sedang mengetik
-- 📜 **Message History** - Muat 50 pesan terakhir secara otomatis
-- 🎨 **Clean UI** - Menggunakan shadcn/ui components dengan Tailwind CSS
-- 📱 **Responsive** - Tampilan optimal di desktop dan mobile
-- 🔒 **Anonymous Auth** - Cukup masukkan nama, tanpa perlu akun
-- ⚡ **Anti-spam** - Cooldown 800ms untuk mencegah spam
-- 🎯 **Message Validation** - Maksimal 300 karakter per pesan
-- 📊 **Virtualized List** - Performa optimal dengan react-virtuoso
+- **Realtime Messaging** - Messages are instantly delivered to all active users
+- **Active Users** - View who is currently online
+- **Typing Indicator** - See when other users are typing
+- **Message History** - Automatically loads the last 50 messages
+- **Clean UI** - Built with shadcn/ui components and Tailwind CSS
+- **Responsive Design** - Optimized for both desktop and mobile devices
+- **Anonymous Authentication** - Simply enter your name, no account required
+- **Anti-spam Protection** - 800ms cooldown to prevent message spam
+- **Message Validation** - Maximum 300 characters per message
+- **Virtualized List** - Optimal performance with react-virtuoso
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
 - **UI Library**: shadcn/ui + Tailwind CSS v4
@@ -25,9 +25,9 @@ Aplikasi web chat realtime yang dibangun dengan Next.js 16, shadcn/ui, dan Ably 
 - **Virtualization**: react-virtuoso
 - **TypeScript**: Full type safety
 
-## 📦 Instalasi
+## Installation
 
-1. Clone repository:
+1. Clone the repository:
 
 ```bash
 git clone <repository-url>
@@ -42,63 +42,63 @@ bun install
 
 3. Setup environment variables:
 
-Salin file `.env.local.example` menjadi `.env.local`:
+Copy the `.env.local.example` file to `.env.local`:
 
 ```bash
 cp .env.local.example .env.local
 ```
 
-Kemudian edit `.env.local` dan tambahkan Ably API key Anda:
+Then edit `.env.local` and add your Ably API key:
 
 ```env
 NEXT_PUBLIC_ABLY_KEY=your_ably_api_key_here
 ```
 
-**Cara mendapatkan Ably API Key:**
+**How to get an Ably API Key:**
 
-1. Buat akun gratis di [Ably.com](https://ably.com)
-2. Buat aplikasi baru di dashboard
-3. Salin API key dari tab "API Keys"
-4. Gunakan Root key atau buat key baru dengan capabilities: `publish`, `subscribe`, `presence`
+1. Create a free account at [Ably.com](https://ably.com)
+2. Create a new application in the dashboard
+3. Copy the API key from the "API Keys" tab
+4. Use the Root key or create a new key with capabilities: `publish`, `subscribe`, `presence`
 
-5. Jalankan development server:
+5. Run the development server:
 
 ```bash
 bun dev
 ```
 
-5. Buka browser di [http://localhost:3000](http://localhost:3000)
+5. Open your browser at [http://localhost:3000](http://localhost:3000)
 
-## 📁 Struktur Proyek
+## Project Structure
 
 ```
 src/
 ├── app/
 │   ├── api/
-│   │   └── ably-auth/       # Route handler untuk Ably authentication
+│   │   └── ably-auth/       # Route handler for Ably authentication
 │   ├── layout.tsx            # Root layout
 │   └── page.tsx              # Home page
 ├── components/
 │   ├── chat/
-│   │   ├── ActiveUsers.tsx   # Daftar user yang aktif
+│   │   ├── ActiveUsers.tsx   # Active users list
 │   │   ├── ChatContainer.tsx # Main container component
 │   │   ├── ChatFeed.tsx      # Chat message list
-│   │   ├── ConnectionStatus.tsx # Status koneksi indicator
-│   │   ├── MessageInput.tsx  # Input untuk kirim pesan
-│   │   └── NameForm.tsx      # Form untuk input nama
+│   │   ├── ConnectionStatus.tsx # Connection status indicator
+│   │   ├── MessageInput.tsx  # Message input component
+│   │   └── NameForm.tsx      # Name input form
 │   └── ui/                   # shadcn/ui components
 ├── hooks/
-│   ├── useAblyConnection.ts  # Hook untuk Ably connection
-│   ├── useMessages.ts        # Hook untuk messages
-│   ├── usePresence.ts        # Hook untuk presence
-│   └── useTypingIndicator.ts # Hook untuk typing indicator
+│   ├── useAblyConnection.ts  # Hook for Ably connection
+│   ├── useMessages.ts        # Hook for messages
+│   ├── usePresence.ts        # Hook for presence
+│   └── useTypingIndicator.ts # Hook for typing indicator
 ├── lib/
 │   ├── ably/
 │   │   ├── client.ts         # Ably client initialization
-│   │   └── constants.ts      # Konstanta Ably
+│   │   └── constants.ts      # Ably constants
 │   ├── utils/
-│   │   ├── avatar.ts         # Utilities untuk avatar
-│   │   └── time.ts           # Utilities untuk timestamp
+│   │   ├── avatar.ts         # Avatar utilities
+│   │   └── time.ts           # Timestamp utilities
 │   ├── validations/
 │   │   └── name.ts           # Zod schemas
 │   ├── storage.ts            # localStorage utilities
@@ -106,102 +106,102 @@ src/
 │   └── utils.ts              # General utilities
 ```
 
-## 🎯 Clean Architecture Principles
+## Clean Architecture Principles
 
-Aplikasi ini mengikuti best practices clean architecture:
+This application follows clean architecture best practices:
 
-### 1. **Separation of Concerns**
+### Separation of Concerns
 
-- **Components**: UI layer yang fokus pada presentasi
-- **Hooks**: Business logic dan state management
-- **Lib**: Core utilities dan services
+- **Components**: UI layer focused on presentation
+- **Hooks**: Business logic and state management
+- **Lib**: Core utilities and services
 - **API Routes**: Backend endpoints
 
-### 2. **Dependency Injection**
+### Dependency Injection
 
-- Components menerima data via props
-- Hooks provide abstraction untuk external services (Ably)
+- Components receive data via props
+- Hooks provide abstraction for external services (Ably)
 - No hard-coded dependencies
 
-### 3. **Single Responsibility**
+### Single Responsibility
 
-- Setiap component/hook punya satu tanggung jawab spesifik
+- Each component/hook has a single specific responsibility
 - `ChatFeed` = display messages
 - `MessageInput` = handle input
 - `ActiveUsers` = show presence
 
-### 4. **Type Safety**
+### Type Safety
 
-- TypeScript untuk semua code
-- Zod untuk runtime validation
+- TypeScript for all code
+- Zod for runtime validation
 - Strict type checking
 
-### 5. **Reusability**
+### Reusability
 
-- Custom hooks bisa digunakan di component lain
-- UI components dari shadcn/ui
-- Utility functions tersentralisasi
+- Custom hooks can be used in other components
+- UI components from shadcn/ui
+- Centralized utility functions
 
-## 🚀 Fitur Utama
+## Key Features
 
-### 1. Realtime Messaging
+### Realtime Messaging
 
-- Menggunakan Ably Channels untuk pub/sub pattern
-- Auto-load 50 pesan terakhir dari history
-- Scroll otomatis ke pesan terbaru
-- Message grouping berdasarkan pengirim dan waktu
+- Uses Ably Channels for pub/sub pattern
+- Auto-loads last 50 messages from history
+- Auto-scroll to latest messages
+- Message grouping based on sender and time
 
-### 2. Presence System
+### Presence System
 
-- Real-time list user yang aktif
-- Auto enter/leave presence saat join/disconnect
-- Avatar dengan inisial nama dan warna unik
+- Real-time list of active users
+- Auto enter/leave presence on join/disconnect
+- Avatars with initials and unique colors
 
-### 3. Typing Indicator
+### Typing Indicator
 
 - Throttled events (500ms cooldown)
-- Auto-hide setelah 3 detik
-- Tidak menampilkan typing dari user sendiri
+- Auto-hide after 3 seconds
+- Does not show typing from current user
 
-### 4. Connection Management
+### Connection Management
 
-- Auto-reconnect saat koneksi terputus
-- Visual indicator untuk status koneksi
+- Auto-reconnect on connection loss
+- Visual indicator for connection status
 - Graceful degradation
 
-### 5. Input Validation
+### Input Validation
 
-- Nama: 2-20 karakter, alfanumerik + spasi
-- Pesan: 1-300 karakter
+- Name: 2-20 characters, alphanumeric + spaces
+- Message: 1-300 characters
 - Anti-spam cooldown 800ms
 - Character counter
 
-## 🎨 UX Features
+## UX Features
 
-- **Message Grouping**: Pesan dari user yang sama dikelompokkan
-- **Timestamps**: Relatif time untuk setiap pesan
-- **Virtualized List**: Smooth scrolling untuk ribuan pesan
-- **Responsive Layout**: Grid yang adaptif untuk mobile/desktop
+- **Message Grouping**: Messages from the same user are grouped together
+- **Timestamps**: Relative time for each message
+- **Virtualized List**: Smooth scrolling for thousands of messages
+- **Responsive Layout**: Adaptive grid for mobile/desktop
 - **Visual Feedback**: Loading states, error messages, typing indicators
 - **Keyboard Shortcuts**: Enter = send, Shift+Enter = new line
 
-## 🔐 Security & Best Practices
+## Security & Best Practices
 
-- **Token-based Auth**: Ably auth via backend route
-- **Input Validation**: Client + server-side validation dengan Zod
+- **Token-based Auth**: Ably authentication via backend route
+- **Input Validation**: Client and server-side validation with Zod
 - **Rate Limiting**: Anti-spam cooldown
 - **No Sensitive Data**: Anonymous users, no PII storage
 - **Type Safety**: Full TypeScript coverage
 
-## 📝 Environment Variables
+## Environment Variables
 
 ```env
 NEXT_PUBLIC_ABLY_KEY=your_ably_api_key
 ```
 
-**Note**: Prefix `NEXT_PUBLIC_` membuat variable accessible di client-side.
+**Note**: The `NEXT_PUBLIC_` prefix makes the variable accessible on the client-side.
 
-## 🧪 Development
+## Development
 
 ```bash
 # Run development server
@@ -217,10 +217,10 @@ bun start
 bun run lint
 ```
 
-## 📄 License
+## License
 
 MIT
 
-## 👨‍💻 Author
+## Author
 
-Built with ❤️ using Next.js 16 and Ably
+Built with Next.js 16 and Ably
