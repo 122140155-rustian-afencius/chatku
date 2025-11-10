@@ -32,5 +32,8 @@ steps:
 images:
   - 'asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA'
 
+options:
+  logging: CLOUD_LOGGING_ONLY
+
 # Opsi untuk timeout
 timeout: '1600s'
