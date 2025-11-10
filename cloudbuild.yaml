@@ -1,39 +1,41 @@
 steps:
-  # 1. Bangun (Build) Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [
-        'build',
-        '-t',
-        'asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA',
-        '.'
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA",
+        ".",
       ]
 
-  # 2. Dorong (Push) Docker image ke Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [
-        'push',
-        'asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA'
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "push",
+        "asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA",
       ]
 
-  # 3. Deploy ke Cloud Run
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: gcloud
     args:
-      - 'run'
-      - 'deploy'
-      - 'chatku-app'
-      - '--image=asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA'
-      - '--region=asia-southeast2'
-      - '--platform=managed'
-      - '--allow-unauthenticated'
-      - '--port=3000' 
-      - '--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest'
+      - "run"
+      - "deploy"
+      - "chatku-app"
+      - "--image=asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA"
+      - "--region=asia-southeast2"
+      - "--platform=managed"
+      - "--allow-unauthenticated"
+      - "--port=3000"
+      - "--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest"
+      - "--timeout=300"
+      - "--max-instances=10"
+      - "--memory=512Mi"
+      - "--cpu=1"
 
 images:
-  - 'asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA'
+  - "asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA"
 
 options:
   logging: CLOUD_LOGGING_ONLY
 
-# Opsi untuk timeout
-timeout: '1600s'
+timeout: "1600s"
