@@ -31,7 +31,6 @@
     # Ganti 'NEXT_PUBLIC_ABLY_KEY' dengan nama variabel yang diharapkan aplikasi Anda
     - '--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest'
 
-# Menandai image yang berhasil di-deploy
 images:
   - 'asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA'
 
