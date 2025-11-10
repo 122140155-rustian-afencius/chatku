@@ -6,10 +6,6 @@
       'asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA',
       '.'
     ]
-  # Ganti 'asia-southeast1' dengan REGION Anda
-  # Ganti 'chatku-project-anda' dengan PROJECT-ID Anda
-  # Ganti 'chatku-repo' dengan nama Artifact Registry Anda
-  # Ganti 'chatku-app' dengan nama image yang Anda inginkan
 
 # 2. Dorong (Push) Docker image ke Artifact Registry
 - name: 'gcr.io/cloud-builders/docker'
@@ -26,11 +22,11 @@
     - 'deploy'
     - 'chatku-app' # Nama layanan Cloud Run Anda (bisa sama dengan nama image)
     - '--image=asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA'
-    - '--region=asia-southeast2' # REGION tempat Cloud Run Anda berada
+    - '--region=asia-southeast2'
     - '--platform=managed'
-    - '--allow-unauthenticated' # Izinkan akses publik
-    - '--port=3000' # Sesuaikan dengan port yang di-EXPOSE di Dockerfile Anda
-    # Menghubungkan Secret (Kunci Ably) yang kita buat di Bagian 3
+    - '--allow-unauthenticated'
+    - '--port=3000' 
+  
     # Ganti 'ably-key' dengan nama secret Anda
     # Ganti 'NEXT_PUBLIC_ABLY_KEY' dengan nama variabel yang diharapkan aplikasi Anda
     - '--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest'
