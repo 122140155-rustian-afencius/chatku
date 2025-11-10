@@ -1,3 +1,5 @@
+# Cloud Build configuration file to build and deploy the Chatku app to Cloud Run
+
 steps:
   - name: "gcr.io/cloud-builders/docker"
     args:
