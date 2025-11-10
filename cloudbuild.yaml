@@ -20,15 +20,12 @@
   args:
     - 'run'
     - 'deploy'
-    - 'chatku-app' # Nama layanan Cloud Run Anda (bisa sama dengan nama image)
+    - 'chatku-app'
     - '--image=asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA'
     - '--region=asia-southeast2'
     - '--platform=managed'
     - '--allow-unauthenticated'
     - '--port=3000' 
-  
-    # Ganti 'ably-key' dengan nama secret Anda
-    # Ganti 'NEXT_PUBLIC_ABLY_KEY' dengan nama variabel yang diharapkan aplikasi Anda
     - '--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest'
 
 images:
