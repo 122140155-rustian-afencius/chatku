@@ -52,10 +52,9 @@ options:
 
 timeout: "2400s"
 
+# --- PERBAIKAN SINTAKS DI SINI ---
 # Definisikan secret yang akan di-mount
 secrets:
-  - secretManager:
-      # Pastikan nama secret ('ably-key') dan path-nya sudah benar
-      versionName: projects/polar-city-473304-f4/secrets/ably-key/versions/latest
-      # Ini adalah nama variabel yang akan digunakan di 'secretEnv'
-      env: "SECRET_ABLY_KEY"
+  - versionName: projects/polar-city-473304-f4/secrets/ably-key/versions/latest
+    # Ini adalah nama variabel yang akan digunakan di 'secretEnv'
+    env: "SECRET_ABLY_KEY"
