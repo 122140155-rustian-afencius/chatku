@@ -45,7 +45,7 @@ steps:
           --cpu-throttling \
           --no-use-http2 \
           --execution-environment=gen2 \
-          --startup-cpu-boost \
+          --cpu-boost \
           --session-affinity
     timeout: "900s"
 
