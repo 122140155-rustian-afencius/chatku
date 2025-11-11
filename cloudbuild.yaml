@@ -32,7 +32,7 @@ steps:
       - "--memory=1Gi"
       - "--cpu=1"
       - "--min-instances=0"
-      - "--startup-cpu-boost"
+      - "--cpu-boost"
       - "--cpu-throttling"
       - "--no-cpu-throttling"
 
