@@ -57,8 +57,7 @@ timeout: "2400s"
 # --- PERBAIKAN DI SINI ---
 # Blok 'secrets:' di root *diperlukan* untuk mendefinisikan
 # secret yang akan di-mount oleh 'secretEnv'.
-secrets:
-  # Gunakan 'secretManagerVersion' untuk menunjuk ke path lengkap secret
-  - secretManagerVersion: projects/polar-city-473304-f4/secrets/ably-key/versions/latest
-    # 'env:' memetakan path secret ke nama variabel yang digunakan di 'secretEnv'
-    env: "SECRET_ABLY_KEY"
+availableSecrets:
+  secretManager:
+    - versionName: projects/polar-city-473304-f4/secrets/ably-key/versions/latest
+      env: "SECRET_ABLY_KEY"
