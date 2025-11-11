@@ -39,18 +39,25 @@ RUN npm run build \
 # --------------------------------------------------------
 # Tahap 2: Runner (Image Final)
 # --------------------------------------------------------
-FROM gcr.io/distroless/nodejs20-debian12:nonroot AS runner
+FROM node:20-slim AS runner
 
 WORKDIR /app
+
+# Buat user non-root untuk keamanan
+RUN groupadd --gid 1001 nodejs \
+    && useradd --uid 1001 --gid nodejs --shell /bin/bash --create-home nodejs
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nodejs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nodejs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nodejs:nodejs /app/public ./public
+
+USER nodejs
 
 EXPOSE 3000
 
-CMD ["server.js"]
+CMD ["node", "server.js"]

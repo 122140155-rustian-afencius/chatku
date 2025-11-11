@@ -26,29 +26,35 @@ steps:
 
   # 3. Deploy ke Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
-    entrypoint: gcloud
+    entrypoint: bash
     args:
-      - "run"
-      - "deploy"
-      - "chatku-app"
-      - "--image=asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA"
-      - "--region=asia-southeast2"
-      - "--platform=managed"
-      - "--allow-unauthenticated"
-      - "--port=3000"
-      - "--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest"
-      - "--timeout=300"
-      - "--max-instances=10"
-      - "--memory=1Gi"
-      - "--cpu=1"
-      - "--min-instances=0"
-    timeout: "600s"
+      - "-c"
+      - |
+        gcloud run deploy chatku-app \
+          --image=asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA \
+          --region=asia-southeast2 \
+          --platform=managed \
+          --allow-unauthenticated \
+          --port=3000 \
+          --set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest \
+          --timeout=300 \
+          --max-instances=10 \
+          --memory=1Gi \
+          --cpu=1 \
+          --min-instances=0 \
+          --cpu-throttling \
+          --no-use-http2 \
+          --execution-environment=gen2 \
+          --startup-cpu-boost \
+          --session-affinity
+    timeout: "900s"
 
 images:
   - "asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA"
 
 options:
   logging: CLOUD_LOGGING_ONLY
+  machineType: "E2_HIGHCPU_8"
 
 timeout: "2400s"
 
