@@ -1,9 +1,9 @@
 steps:
   # 1. Bangun (Build) Docker image
   - name: "gcr.io/cloud-builders/docker"
-    # Tentukan secretEnv di sini dengan mapping LENGKAP
+    # Tentukan HANYA NAMA variabel yang akan di-mount
     secretEnv:
-      - "SECRET_ABLY_KEY=projects/polar-city-473304-f4/secrets/ably-key/versions/latest"
+      - "SECRET_ABLY_KEY"
     # Gunakan 'bash' sebagai entrypoint untuk mengizinkan substitusi variabel
     entrypoint: "bash"
     args:
@@ -54,4 +54,11 @@ options:
 
 timeout: "2400s"
 
-# Blok 'secrets:' di root tidak diperlukan untuk 'secretEnv' dan telah dihapus
+# --- PERBAIKAN DI SINI ---
+# Blok 'secrets:' di root *diperlukan* untuk mendefinisikan
+# secret yang akan di-mount oleh 'secretEnv'.
+secrets:
+  # Gunakan 'secretManagerVersion' untuk menunjuk ke path lengkap secret
+  - secretManagerVersion: projects/polar-city-473304-f4/secrets/ably-key/versions/latest
+    # 'env:' memetakan path secret ke nama variabel yang digunakan di 'secretEnv'
+    env: "SECRET_ABLY_KEY"
