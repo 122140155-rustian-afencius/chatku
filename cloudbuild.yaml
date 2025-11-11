@@ -1,8 +1,9 @@
 steps:
   # 1. Bangun (Build) Docker image
   - name: "gcr.io/cloud-builders/docker"
-    # Tentukan secretEnv untuk membuat variabel $SECRET_ABLY_KEY tersedia di langkah ini
-    secretEnv: ["SECRET_ABLY_KEY"]
+    # Tentukan secretEnv di sini dengan mapping LENGKAP
+    secretEnv:
+      - "SECRET_ABLY_KEY=projects/polar-city-473304-f4/secrets/ably-key/versions/latest"
     # Gunakan 'bash' sebagai entrypoint untuk mengizinkan substitusi variabel
     entrypoint: "bash"
     args:
@@ -23,7 +24,7 @@ steps:
         "asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA",
       ]
 
-  # 3. Deploy ke Cloud Run (Langkah ini sudah benar)
+  # 3. Deploy ke Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: gcloud
     args:
@@ -35,7 +36,8 @@ steps:
       - "--platform=managed"
       - "--allow-unauthenticated"
       - "--port=3000"
-      - "--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest" # <-- Ini untuk runtime
+      # '--set-secrets' untuk runtime (ini sudah benar)
+      - "--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest"
       - "--timeout=300"
       - "--max-instances=10"
       - "--memory=1Gi"
@@ -52,10 +54,4 @@ options:
 
 timeout: "2400s"
 
-# --- PERBAIKAN SINTAKS DI SINI ---
-# Definisikan secret yang akan di-mount
-secrets:
-  # Nama field yang benar adalah 'secretManagerVersion'
-  - secretManagerVersion: projects/polar-city-473304-f4/secrets/ably-key/versions/latest
-    # Ini adalah nama variabel yang akan digunakan di 'secretEnv'
-    env: "SECRET_ABLY_KEY"
+# Blok 'secrets:' di root tidak diperlukan untuk 'secretEnv' dan telah dihapus
