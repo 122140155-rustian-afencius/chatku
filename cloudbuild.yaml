@@ -36,15 +36,13 @@ steps:
       - "--platform=managed"
       - "--allow-unauthenticated"
       - "--port=3000"
-      # '--set-secrets' untuk runtime (ini sudah benar)
       - "--set-secrets=NEXT_PUBLIC_ABLY_KEY=ably-key:latest"
       - "--timeout=300"
       - "--max-instances=10"
       - "--memory=1Gi"
       - "--cpu=1"
       - "--min-instances=0"
-      - "--cpu-boost"
-      - "--no-cpu-throttling"
+    timeout: "600s"
 
 images:
   - "asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA"
