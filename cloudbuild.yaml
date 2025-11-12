@@ -1,10 +1,7 @@
 steps:
-  # 1. Bangun (Build) Docker image
   - name: "gcr.io/cloud-builders/docker"
-    # Tentukan HANYA NAMA variabel yang akan di-mount
     secretEnv:
       - "SECRET_ABLY_KEY"
-    # Gunakan 'bash' sebagai entrypoint untuk mengizinkan substitusi variabel
     entrypoint: "bash"
     args:
       - "-c"
@@ -13,10 +10,7 @@ steps:
           -t "asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA" \
           --build-arg "NEXT_PUBLIC_ABLY_KEY=$$SECRET_ABLY_KEY" \
           .
-    # $$SECRET_ABLY_KEY diperlukan agar Cloud Build tahu untuk
-    # menggunakan variabel $SECRET_ABLY_KEY, bukan mencoba substitusi Cloud Build
 
-  # 2. Dorong (Push) Docker image ke Artifact Registry
   - name: "gcr.io/cloud-builders/docker"
     args:
       [
@@ -24,7 +18,6 @@ steps:
         "asia-southeast2-docker.pkg.dev/polar-city-473304-f4/chatku-repo/chatku-app:$COMMIT_SHA",
       ]
 
-  # 3. Deploy ke Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk:slim"
     entrypoint: bash
     args:
@@ -57,9 +50,6 @@ options:
 
 timeout: "2400s"
 
-# --- PERBAIKAN DI SINI ---
-# Blok 'secrets:' di root *diperlukan* untuk mendefinisikan
-# secret yang akan di-mount oleh 'secretEnv'.
 availableSecrets:
   secretManager:
     - versionName: projects/polar-city-473304-f4/secrets/ably-key/versions/latest
