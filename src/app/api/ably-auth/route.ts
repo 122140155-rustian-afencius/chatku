@@ -35,3 +35,13 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function GET() {
+  const apiKey = process.env.ABLY_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ error: "ABLY_API_KEY missing" }, { status: 500 });
+  }
+  const client = new Ably.Rest(apiKey);
+  const tokenRequest = await client.auth.createTokenRequest({ clientId: "anonymous" });
+  return NextResponse.json(tokenRequest);
+}
