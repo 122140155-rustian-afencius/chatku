@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const apiKey = process.env.NEXT_PUBLIC_ABLY_KEY;
+    const apiKey = process.env.ABLY_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         { error: "Ably API key not configured" },
