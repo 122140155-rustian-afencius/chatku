@@ -60,7 +60,7 @@ export const ChatFeed = ({
 
   return (
     <Card className="h-full flex flex-col overflow-hidden border-none shadow-none bg-transparent">
-      <CardContent className="flex-1 overflow-hidden p-3 sm:p-6 min-h-0">
+      <CardContent className="flex-1 overflow-hidden p-2 sm:p-4 min-h-0">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full gap-3">
             <div className="w-20 h-20 rounded-full bg-muted/50 flex items-center justify-center">

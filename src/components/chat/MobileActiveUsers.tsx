@@ -6,13 +6,11 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { PresenceMember } from "@/lib/types";
@@ -55,62 +53,51 @@ export const MobileActiveUsers = ({
       <SheetTrigger asChild>
         <Button
           size="icon"
-          className="fixed bottom-[calc(72px+env(safe-area-inset-bottom))] right-[calc(16px+env(safe-area-inset-right))] z-40 h-14 w-14 rounded-full bg-gradient-to-br from-primary via-primary/90 to-primary/70 text-primary-foreground shadow-2xl transition-all hover:scale-[1.03] hover:shadow-[0_20px_60px_-15px_rgba(59,130,246,0.8)] sm:bottom-20 sm:right-4 lg:hidden"
+          className="fixed bottom-[calc(80px+env(safe-area-inset-bottom))] right-[calc(16px+env(safe-area-inset-right))] z-40 h-12 w-12 rounded-full bg-gradient-to-br from-primary via-primary/90 to-primary/70 text-primary-foreground shadow-xl transition-all hover:scale-[1.05] hover:shadow-2xl sm:bottom-24 sm:right-6 lg:hidden"
         >
-          <UsersIcon className="h-6 w-6" />
+          <UsersIcon className="h-5 w-5" />
           {users.length > 0 && (
-            <Badge className="absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full border border-background/80 bg-background/95 p-0 text-[10px] font-bold text-foreground shadow-lg">
+            <div className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-background bg-primary text-[9px] font-bold text-primary-foreground shadow-sm">
               {users.length}
-            </Badge>
+            </div>
           )}
         </Button>
       </SheetTrigger>
       <SheetContent
         side="right"
-        className="w-full max-w-sm px-0 pb-[max(env(safe-area-inset-bottom),0px)]"
+        className="w-full max-w-xs px-0 pb-[max(env(safe-area-inset-bottom),0px)]"
       >
         <div className="flex h-full flex-col">
-          <SheetHeader className="px-6 pb-4 pt-6">
-            <SheetTitle className="flex items-center justify-between gap-3 text-lg font-semibold">
+          <SheetHeader className="px-4 pb-4 pt-6 border-b border-border/40">
+            <SheetTitle className="flex items-center justify-between gap-3 text-base font-semibold">
               <span className="inline-flex items-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.7)]" />
                 Active teammates
               </span>
-              <Badge
-                variant="secondary"
-                className="rounded-full border border-primary/30 bg-primary/10 text-xs font-semibold uppercase tracking-widest text-primary"
-              >
+              <span className="text-xs font-medium text-muted-foreground">
                 {users.length} online
-              </Badge>
+              </span>
             </SheetTitle>
-            <SheetDescription className="text-xs text-muted-foreground">
-              Filter, scan, and reach out to collaborators without leaving the
-              conversation.
-            </SheetDescription>
             <div className="relative mt-4">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
               <Input
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search teammates…"
-                className="h-11 rounded-xl border-2 bg-background/70 pl-10 text-sm shadow-inner placeholder:text-muted-foreground/70 focus-visible:border-primary/40"
+                placeholder="Search teammates..."
+                className="h-9 rounded-lg border bg-background/50 pl-9 text-sm shadow-sm focus-visible:ring-1"
               />
             </div>
           </SheetHeader>
-          <ScrollArea className="h-[calc(100vh-220px)] px-6 pb-6">
+          <ScrollArea className="flex-1 px-2 py-2">
             {filteredUsers.length === 0 ? (
-              <div className="mt-8 flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/70 bg-background/50 px-4 py-16 text-center">
-                <UsersIcon className="mb-3 h-6 w-6 text-muted-foreground" />
+              <div className="mt-8 flex flex-col items-center justify-center px-4 py-8 text-center">
+                <UsersIcon className="mb-2 h-5 w-5 text-muted-foreground" />
                 <p className="text-sm font-medium text-foreground">
                   No teammates found
                 </p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  Try a different keyword or clear the filter to see everyone
-                  online.
-                </p>
               </div>
             ) : (
-              <div className="space-y-2">
+              <div className="space-y-1">
                 {filteredUsers.map((user) => {
                   const isCurrentUser = user.clientId === currentUserId;
                   const isTyping = typingUsers.has(user.clientId);
@@ -118,43 +105,41 @@ export const MobileActiveUsers = ({
                   return (
                     <div
                       key={user.clientId}
-                      className="group flex items-center gap-4 rounded-xl border border-transparent bg-background/50 p-3.5 transition-all duration-200 hover:border-primary/40 hover:bg-background/80 hover:shadow-lg"
+                      className="group flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-accent/50 transition-colors"
                     >
-                      <Avatar className="h-12 w-12 ring-2 ring-background shadow-lg transition-transform duration-200 group-hover:scale-105">
-                        <AvatarFallback
-                          className={`${getAvatarColor(
-                            user.clientId
-                          )} text-base font-semibold text-white`}
-                        >
-                          {getInitials(user.data.userName)}
-                        </AvatarFallback>
-                      </Avatar>
+                      <div className="relative shrink-0">
+                        <Avatar className="h-9 w-9 ring-1 ring-border/50">
+                          <AvatarFallback
+                            className={`${getAvatarColor(
+                              user.clientId
+                            )} text-xs font-medium text-white`}
+                          >
+                            {getInitials(user.data.userName)}
+                          </AvatarFallback>
+                        </Avatar>
+                        {isTyping && (
+                          <span className="absolute -bottom-0.5 -right-0.5 flex h-2.5 w-2.5 items-center justify-center rounded-full bg-background ring-2 ring-background">
+                            <span className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse" />
+                          </span>
+                        )}
+                      </div>
+                      
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-semibold text-foreground">
-                          {user.data.userName}
-                        </p>
-                        <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                        <div className="flex items-center justify-between gap-2">
+                          <p className="truncate text-sm font-medium text-foreground">
+                            {user.data.userName}
+                          </p>
                           {isCurrentUser && (
-                            <Badge
-                              variant="outline"
-                              className="border-primary/30 bg-primary/10 text-[11px] font-semibold uppercase tracking-wider text-primary"
-                            >
+                            <span className="text-[10px] font-medium text-muted-foreground">
                               You
-                            </Badge>
-                          )}
-                          {isTyping && (
-                            <Badge
-                              variant="outline"
-                              className="border-amber-300/40 bg-amber-100/40 text-[11px] font-semibold uppercase tracking-wider text-amber-600 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-300"
-                            >
-                              typing
-                            </Badge>
+                            </span>
                           )}
                         </div>
-                      </div>
-                      <div className="relative shrink-0">
-                        <div className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.6)]" />
-                        <div className="absolute inset-0 h-2 w-2 rounded-full bg-emerald-400/60 opacity-60 blur-[2px]" />
+                        {isTyping && (
+                          <p className="text-[10px] text-amber-500 font-medium truncate">
+                            typing...
+                          </p>
+                        )}
                       </div>
                     </div>
                   );
