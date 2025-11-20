@@ -1,11 +1,10 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
-import { messageSchema } from "@/lib/validations/name";
-import { ANTI_SPAM_COOLDOWN } from "@/lib/ably/constants";
+import { useMessageInput } from "@/hooks/useMessageInput";
+import { QUICK_REPLIES, MAX_MESSAGE_LENGTH, WARNING_LENGTH, MAX_INPUT_LENGTH } from "@/lib/constants";
 
 interface MessageInputProps {
   onSend: (text: string) => Promise<void>;
@@ -13,81 +12,19 @@ interface MessageInputProps {
 }
 
 export const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
-  const [text, setText] = useState("");
-  const [error, setError] = useState("");
-  const [isSending, setIsSending] = useState(false);
-  const [canSend, setCanSend] = useState(true);
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (!canSend) {
-      const timer = setTimeout(() => {
-        setCanSend(true);
-      }, ANTI_SPAM_COOLDOWN);
-      return () => clearTimeout(timer);
-    }
-  }, [canSend]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!canSend) {
-      setError("Please wait before sending another message");
-      return;
-    }
-
-    const result = messageSchema.safeParse(text);
-
-    if (!result.success) {
-      setError(result.error.issues[0].message);
-      return;
-    }
-
-    setIsSending(true);
-    setCanSend(false);
-
-    try {
-      await onSend(result.data);
-      setText("");
-      setError("");
-    } catch {
-      setError("Failed to send message");
-    } finally {
-      setIsSending(false);
-      inputRef.current?.focus();
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(e as unknown as React.FormEvent);
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-    setError("");
-    onTyping();
-  };
-
-  const charCount = text.length;
-  const isOverLimit = charCount > 300;
-  const quickReplies = [
-    "Good morning team — here’s a quick update.",
-    "Let’s circle back in 10 minutes with action items.",
-    "Thanks! I’ll take ownership and report back.",
-    "Can you drop the latest file here for review?",
-  ];
-
-  const handleQuickReply = (reply: string) => {
-    setText(reply);
-    setError("");
-    onTyping();
-    requestAnimationFrame(() => {
-      inputRef.current?.focus();
-    });
-  };
+  const {
+    text,
+    error,
+    isSending,
+    canSend,
+    inputRef,
+    charCount,
+    isOverLimit,
+    handleSubmit,
+    handleKeyDown,
+    handleChange,
+    handleQuickReply,
+  } = useMessageInput({ onSend, onTyping });
 
   return (
     <div className="space-y-3">
@@ -96,7 +33,7 @@ export const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
           Quick:
         </span>
         <div className="flex gap-2">
-          {quickReplies.map((reply) => (
+          {QUICK_REPLIES.map((reply) => (
             <button
               key={reply}
               type="button"
@@ -130,19 +67,19 @@ export const MessageInput = ({ onSend, onTyping }: MessageInputProps) => {
                 ? "border-destructive focus-visible:ring-destructive"
                 : "focus-visible:border-foreground/30"
             }`}
-            maxLength={320}
+            maxLength={MAX_INPUT_LENGTH}
           />
           <div className="flex justify-between mt-2 px-2">
             <p
               className={`text-[10px] sm:text-xs font-semibold transition-colors ${
                 isOverLimit
                   ? "text-destructive"
-                  : charCount > 250
+                  : charCount > WARNING_LENGTH
                   ? "text-orange-500"
                   : "text-muted-foreground"
               }`}
             >
-              {charCount}/300
+              {charCount}/{MAX_MESSAGE_LENGTH}
             </p>
             {!canSend && (
               <div className="flex items-center gap-1.5">
